@@ -3,7 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/tr/AndroidStudioProjects/Countries/app/src/main/res/drawable/ic_arrow_forward.xml" value="0.293" />
+        <entry key="..\:/Users/tr/AndroidStudioProjects/Countries/app/src/main/res/drawable/ic_empty_star.xml" value="0.293" />
+        <entry key="..\:/Users/tr/AndroidStudioProjects/Countries/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.293" />
+        <entry key="..\:/Users/tr/AndroidStudioProjects/Countries/app/src/main/res/drawable/ic_saved.xml" value="0.293" />
+        <entry key="..\:/Users/tr/AndroidStudioProjects/Countries/app/src/main/res/drawable/ic_star.xml" value="0.293" />
+        <entry key="..\:/Users/tr/AndroidStudioProjects/Countries/app/src/main/res/font/open_sans.xml" value="0.434375" />
         <entry key="..\:/Users/tr/AndroidStudioProjects/Countries/app/src/main/res/layout/activity_main.xml" value="0.4041666666666667" />
+        <entry key="..\:/Users/tr/AndroidStudioProjects/Countries/app/src/main/res/layout/content_main.xml" value="0.4041666666666667" />
+        <entry key="..\:/Users/tr/AndroidStudioProjects/Countries/app/src/main/res/layout/fragment_detail.xml" value="0.39010416666666664" />
+        <entry key="..\:/Users/tr/AndroidStudioProjects/Countries/app/src/main/res/layout/fragment_home.xml" value="0.4041666666666667" />
+        <entry key="..\:/Users/tr/AndroidStudioProjects/Countries/app/src/main/res/layout/fragment_saved.xml" value="0.4041666666666667" />
+        <entry key="..\:/Users/tr/AndroidStudioProjects/Countries/app/src/main/res/layout/item_country.xml" value="0.536" />
+        <entry key="..\:/Users/tr/AndroidStudioProjects/Countries/app/src/main/res/menu/bottom_nav_menu.xml" value="0.4041666666666667" />
       </map>
     </option>
   </component>
