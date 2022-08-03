@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.saved.SavedFragment">
 
     <TextView
         android:id="@+id/tvTitle"
@@ -15,7 +15,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/open_sans"
         android:gravity="center"
-        android:text="Countries"
+        android:text="Saved Countries"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,5 +42,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
