@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.mert.countries">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".CountriesApplication"
         android:allowBackup="true"

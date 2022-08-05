@@ -2,6 +2,6 @@
     <string name="app_name">Countries</string>
     <string name="title_home">Home</string>
     <string name="title_saved">Saved</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="country_name">%1$s</string>
+    <string name="country_code">%1$s</string>
 </resources>

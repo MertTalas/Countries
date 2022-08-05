@@ -1,4 +1,4 @@
-package com.mert.countries.data.model.countrydetail
+package com.mert.countries.data.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
