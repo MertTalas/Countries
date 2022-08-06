@@ -1,24 +1,12 @@
 package com.mert.countries.ui.detail
 
-import android.content.Intent
-import android.net.Uri
-import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.View
-import android.widget.Toast
-import androidx.fragment.app.viewModels
 import com.mert.countries.R
-import com.mert.countries.common.Constants
-import com.mert.countries.common.Status
-import com.mert.countries.data.model.Country
-import com.mert.countries.databinding.FragmentDetailBinding
-import com.mert.countries.utils.loadUrl
-import com.mert.countries.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DetailFragment : Fragment(R.layout.fragment_detail) {
-
+/*
     private val binding by viewBinding(FragmentDetailBinding::bind)
     private val detailViewModel: DetailViewModel by viewModels()
     private var country: Country? = null
@@ -29,7 +17,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
         country = arguments?.getParcelable("country")
 
         country?.let {
-            val isInSaved = detailViewModel.savedManager.countryInSaved(it)
+            val isInSaved = detailViewModel.savedManager.countryTempInSaved(it)
             if (isInSaved)
                 binding.ivSaved.setImageResource(R.drawable.ic_star)
             else
@@ -53,9 +41,9 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     }
 
     private fun observeViewModel() {
-        detailViewModel.savedManager.getSavedLiveData()?.observe(viewLifecycleOwner) {
+        detailViewModel.savedManager.isOperationSucceeded.observe(viewLifecycleOwner) {
             country?.let {
-                val isInSaved = detailViewModel.savedManager.countryInSaved(it)
+                val isInSaved = detailViewModel.savedManager.countryTempInSaved(it)
                 if (isInSaved)
                     binding.ivSaved.setImageResource(R.drawable.ic_star)
                 else
@@ -104,5 +92,5 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
                     }
                 }
             }
-    }
+    }*/
 }

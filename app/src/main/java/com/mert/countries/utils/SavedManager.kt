@@ -1,6 +1,7 @@
 package com.mert.countries.utils
 
 import android.content.SharedPreferences
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -9,47 +10,42 @@ import com.mert.countries.data.model.Country
 import java.lang.reflect.Type
 import javax.inject.Inject
 
-class SavedManager @Inject constructor(private val preferences: SharedPreferences){
+class SavedManager @Inject constructor(
+    private val preferences: SharedPreferences,
+    private val gson: Gson
+) {
+    private var _isOperationSucceeded = MutableLiveData(false)
+    val isOperationSucceeded: LiveData<Boolean>
+        get() = _isOperationSucceeded
 
-    private var savedLiveData: MutableLiveData<Boolean>? = null
-
-    fun getCountries(): ArrayList<Country>? {
-        val gson = Gson()
-        val jsonString: String? = preferences.getString(Constants.SHARED_PREFERENCES_KEY, null)
+    fun getTempCountries(): ArrayList<Country>? {
+        val modelJson: String? = preferences.getString(Constants.COUNTRY_KEY, null)
         val type: Type? = object : TypeToken<ArrayList<Country>>() {}.type
 
-        return gson.fromJson(jsonString, type)
+        return gson.fromJson(modelJson, type)
     }
 
-    fun setCountry(country: Country) {
-        val countries = getCountries() ?: arrayListOf()
-        countries.add(country)
+    fun removeTempCountry(country: Country) {
+        val countries = getTempCountries() ?: arrayListOf()
 
-        val editor = preferences.edit()
-        val gson = Gson()
-        val jsonString: String? = gson.toJson(countries)
-        editor.putString(Constants.SHARED_PREFERENCES_KEY, jsonString)
-        editor.apply()
+        val requiredCountry = countries.firstOrNull { it.code == country.code }
 
-        savedLiveData?.postValue(true)
+        if (requiredCountry == null) {
+            _isOperationSucceeded.postValue(false)
+            return
+        } else {
+            countries.remove(requiredCountry)
+            val modelToJson: String? = gson.toJson(countries)
+            with(preferences.edit()) {
+                putString(Constants.COUNTRY_KEY, modelToJson)
+                apply()
+            }
+            _isOperationSucceeded.postValue(true)
+        }
     }
 
-    fun removeCountry(country: Country) {
-        val countries = getCountries() ?: arrayListOf()
-
-        countries.removeIf { it.code == country.code }
-
-        val editor = preferences.edit()
-        val gson = Gson()
-        val jsonString: String? = gson.toJson(countries)
-        editor.putString(Constants.SHARED_PREFERENCES_KEY, jsonString)
-        editor.apply()
-
-        savedLiveData?.postValue(true)
-    }
-
-    fun countryInSaved(country: Country): Boolean {
-        val countries = getCountries() ?: arrayListOf()
+    fun countryTempInSaved(country: Country): Boolean {
+        val countries = getTempCountries() ?: arrayListOf()
 
         for (item in countries) {
             if (country.code == item.code) {
@@ -59,8 +55,19 @@ class SavedManager @Inject constructor(private val preferences: SharedPreference
         return false
     }
 
-    fun getSavedLiveData(): MutableLiveData<Boolean>? {
-        if (savedLiveData == null) savedLiveData = MutableLiveData<Boolean>()
-        return savedLiveData
+    fun getModelAsJson(): String? {
+        return preferences.getString(Constants.COUNTRY_KEY, null)
+    }
+
+    fun getModelType(): Type? {
+        return object : TypeToken<ArrayList<Country>>() {}.type
+    }
+
+    fun getJsonToModel(modelJson: String?, type: Type?): ArrayList<Country>? {
+        return gson.fromJson<ArrayList<Country>?>(modelJson, type)
+    }
+
+    fun getModelToJson(modelList: ArrayList<Country>?): String? {
+        return gson.toJson(modelList)
     }
 }

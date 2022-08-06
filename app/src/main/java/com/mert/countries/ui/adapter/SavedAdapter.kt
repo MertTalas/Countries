@@ -15,7 +15,7 @@ class SavedAdapter(
     private val savedManager: SavedManager
 ) : RecyclerView.Adapter<SavedAdapter.ItemViewHolder>(){
 
-    private var countriesInSaved = savedManager.getCountries() ?: arrayListOf()
+    private var countriesInSaved = savedManager.getTempCountries() ?: arrayListOf()
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = ItemCountryBinding.bind(itemView)
@@ -40,7 +40,7 @@ class SavedAdapter(
             ivSaved.setImageResource(R.drawable.ic_star)
 
             ivSaved.setOnClickListener {
-                savedManager.removeCountry(countriesInSaved[position])
+                savedManager.removeTempCountry(countriesInSaved[position])
             }
         }
     }

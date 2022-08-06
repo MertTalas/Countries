@@ -5,59 +5,69 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mert.countries.R
-import com.mert.countries.data.model.Country
 import com.mert.countries.databinding.ItemCountryBinding
-import com.mert.countries.utils.ListActions
-import com.mert.countries.utils.SavedManager
+import com.mert.countries.domain.uimodel.CountryUI
+import com.mert.countries.ui.home.CountryClickListener
 
 class HomeAdapter constructor(
-    private val listActions: ListActions,
-    private val savedManager: SavedManager
+    private val countryClickListener: CountryClickListener
 ) : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
-    private var countries: ArrayList<Country> = ArrayList()
+    private var countries: ArrayList<CountryUI> = ArrayList()
 
-    class HomeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val binding = ItemCountryBinding.bind(itemView)
-        fun bind(country: Country) {
-            binding.tvTitle.text = country.name
+    class HomeViewHolder(
+        itemView: View,
+        private val countryClickListener: CountryClickListener
+    ) : RecyclerView.ViewHolder(itemView) {
+        private val binding = ItemCountryBinding.bind(itemView)
+
+        fun bind(country: CountryUI) {
+            with(binding) {
+                tvTitle.text = country.title
+                tvTitle.setOnClickListener {
+                    countryClickListener.onClickCountry(country)
+                }
+
+                val isSaved = checkIfCountryIsSaved(country)
+                val starIcon = if (isSaved) {
+                    R.drawable.ic_star
+                } else {
+                    R.drawable.ic_empty_star
+                }
+
+                ivSaved.setImageResource(starIcon)
+                ivSaved.setOnClickListener {
+                    if (isSaved) {
+                        removeCountry(country)
+                    } else {
+                        addCountry(country)
+                    }
+                }
+            }
         }
+
+        private fun checkIfCountryIsSaved(country: CountryUI) =
+            countryClickListener.checkIfCountryIsSaved(country.countryId ?: "")
+
+        private fun removeCountry(country: CountryUI) = countryClickListener.removeCountry(country)
+
+        private fun addCountry(country: CountryUI) = countryClickListener.addCountry(country)
+
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = HomeViewHolder (
-        LayoutInflater.from(parent.context).inflate(R.layout.item_country, parent,false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = HomeViewHolder(
+        LayoutInflater.from(parent.context).inflate(R.layout.item_country, parent, false),
+        countryClickListener
     )
 
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
-        holder.bind(countries[position])
-        holder.binding.tvTitle.setOnClickListener {
-            listActions.onClickCountry(countries[position])
-        }
-
-        val isSaved = savedManager.countryInSaved(countries[position])
-
-        if (isSaved) {
-            holder.binding.ivSaved.setImageResource(R.drawable.ic_star)
-        } else {
-            holder.binding.ivSaved.setImageResource(R.drawable.ic_empty_star)
-        }
-
-        holder.binding.ivSaved.setOnClickListener {
-            val isInSaved = savedManager.countryInSaved(countries[position])
-
-            if (isInSaved) {
-                savedManager.removeCountry(countries[position])
-            } else {
-                savedManager.setCountry(countries[position])
-            }
-
-            notifyDataSetChanged()
-        }
+        val currentCountry = countries[position]
+        holder.bind(currentCountry)
     }
 
     override fun getItemCount(): Int = countries.size
 
-    fun updateList(countries: List<Country>) {
+    fun updateList(countries: List<CountryUI>) {
         this.countries.apply {
             clear()
             addAll(countries)

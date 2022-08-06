@@ -1,9 +1,8 @@
 package com.mert.countries.data.remote
 
-import com.mert.countries.data.model.response.CountryResponse
 import com.mert.countries.data.model.response.CountryDetailsResponse
+import com.mert.countries.data.model.response.CountryResponse
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
 
