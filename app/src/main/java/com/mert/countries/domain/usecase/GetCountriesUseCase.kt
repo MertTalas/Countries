@@ -5,6 +5,6 @@ import javax.inject.Inject
 
 class GetCountriesUseCase @Inject constructor(
     private val countryRepository: CountryRepository
-){
+) {
     suspend operator fun invoke() = countryRepository.getCountries()
 }

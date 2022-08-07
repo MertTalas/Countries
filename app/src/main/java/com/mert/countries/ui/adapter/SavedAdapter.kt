@@ -13,36 +13,40 @@ import com.mert.countries.utils.SavedManager
 class SavedAdapter(
     private val listActions: ListActions,
     private val savedManager: SavedManager
-) : RecyclerView.Adapter<SavedAdapter.ItemViewHolder>(){
+) : RecyclerView.Adapter<SavedAdapter.ItemViewHolder>() {
 
     private var countriesInSaved = savedManager.getCountries() ?: arrayListOf()
 
-    class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val binding = ItemCountryBinding.bind(itemView)
+    class ItemViewHolder(
+        itemView: View,
+        private val listActions: ListActions,
+        val savedManager: SavedManager
+    ) : RecyclerView.ViewHolder(itemView) {
+        private val binding = ItemCountryBinding.bind(itemView)
 
         fun bind(country: Country) {
-            binding.tvTitle.text = country.name
+            with(binding) {
+                tvTitle.text = country.name
+                itemLayout.setOnClickListener {
+                    listActions.onClickCountry(country)
+                }
+                ivSaved.setImageResource(com.mert.countries.R.drawable.ic_star)
+                ivSaved.setOnClickListener {
+                    savedManager.removeCountry(country)
+                }
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ItemViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.item_country, parent, false)
+        LayoutInflater.from(parent.context).inflate(R.layout.item_country, parent, false),
+        listActions,
+        savedManager
     )
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.bind(countriesInSaved[position])
-
-        with(holder.binding) {
-            noteLayout.setOnClickListener {
-                listActions.onClickCountry(countriesInSaved[position])
-            }
-
-            ivSaved.setImageResource(R.drawable.ic_star)
-
-            ivSaved.setOnClickListener {
-                savedManager.removeCountry(countriesInSaved[position])
-            }
-        }
+        val currentCountry = countriesInSaved[position]
+        holder.bind(currentCountry)
     }
 
     override fun getItemCount(): Int = countriesInSaved.size

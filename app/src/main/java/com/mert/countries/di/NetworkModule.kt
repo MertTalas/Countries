@@ -19,7 +19,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ApiModule {
+object NetworkModule {
 
     @Singleton
     @Provides
@@ -49,7 +49,6 @@ object ApiModule {
         .addInterceptor { chain ->
             val urlWithParams = chain.request().url
                 .newBuilder()
-                .addQueryParameter("api_key", Constants.API_KEY)
                 .build()
             val request: Request = chain.request()
                 .newBuilder()

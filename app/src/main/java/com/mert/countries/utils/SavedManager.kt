@@ -9,54 +9,46 @@ import com.mert.countries.data.model.Country
 import java.lang.reflect.Type
 import javax.inject.Inject
 
-class SavedManager @Inject constructor(private val preferences: SharedPreferences){
-
+class SavedManager @Inject constructor(
+    private val preferences: SharedPreferences,
+    private val gson: Gson
+) {
     private var savedLiveData: MutableLiveData<Boolean>? = null
 
     fun getCountries(): ArrayList<Country>? {
-        val gson = Gson()
         val jsonString: String? = preferences.getString(Constants.SHARED_PREFERENCES_KEY, null)
         val type: Type? = object : TypeToken<ArrayList<Country>>() {}.type
-
         return gson.fromJson(jsonString, type)
     }
 
-    fun setCountry(country: Country) {
+    fun addCountry(country: Country) {
         val countries = getCountries() ?: arrayListOf()
         countries.add(country)
-
-        val editor = preferences.edit()
-        val gson = Gson()
-        val jsonString: String? = gson.toJson(countries)
-        editor.putString(Constants.SHARED_PREFERENCES_KEY, jsonString)
-        editor.apply()
-
+        saveModelAsJson(countries)
         savedLiveData?.postValue(true)
     }
 
     fun removeCountry(country: Country) {
         val countries = getCountries() ?: arrayListOf()
+        val requiredCountry = countries.firstOrNull { it.code == country.code }
+        if (requiredCountry != null) {
+            countries.remove(requiredCountry)
+            saveModelAsJson(countries)
+            savedLiveData?.postValue(true)
+        }
+    }
 
-        countries.removeIf { it.code == country.code }
-
+    private fun saveModelAsJson(countries: java.util.ArrayList<Country>) {
         val editor = preferences.edit()
-        val gson = Gson()
         val jsonString: String? = gson.toJson(countries)
         editor.putString(Constants.SHARED_PREFERENCES_KEY, jsonString)
         editor.apply()
-
-        savedLiveData?.postValue(true)
     }
 
-    fun countryInSaved(country: Country): Boolean {
+    fun isCountrySaved(country: Country): Boolean {
         val countries = getCountries() ?: arrayListOf()
-
-        for (item in countries) {
-            if (country.code == item.code) {
-                return true
-            }
-        }
-        return false
+        val savedCountry = countries.firstOrNull { it.code == country.code }
+        return savedCountry != null
     }
 
     fun getSavedLiveData(): MutableLiveData<Boolean>? {

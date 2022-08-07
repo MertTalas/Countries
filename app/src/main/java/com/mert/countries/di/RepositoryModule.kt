@@ -2,6 +2,7 @@ package com.mert.countries.di
 
 import com.mert.countries.data.remote.CityService
 import com.mert.countries.data.repository.CountryRepositoryImpl
+import com.mert.countries.domain.repository.CountryRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,7 +15,7 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideDataRepository(citiesAPI: CityService): CountryRepositoryImpl {
-        return CountryRepositoryImpl(citiesAPI)
+    fun provideCountryRepository(cityAPI: CityService): CountryRepository {
+        return CountryRepositoryImpl(cityAPI)
     }
 }

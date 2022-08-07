@@ -13,14 +13,14 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     private val getCountryDetailByIdUseCase: GetCountryDetailByIdUseCase,
     val savedManager: SavedManager
-): ViewModel(){
+) : ViewModel() {
 
     fun fetchCountryDetail(countryCode: String) = liveData(Dispatchers.IO) {
         emit(Resource.loading(null))
         try {
             emit(Resource.success(data = getCountryDetailByIdUseCase.invoke(countryCode)))
         } catch (exception: Exception) {
-            emit(Resource.error(exception.message ?: "Error Occured!", data = null))
+            emit(Resource.error(exception.message ?: "Something went wrong!", data = null))
         }
     }
 }
