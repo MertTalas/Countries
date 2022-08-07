@@ -65,9 +65,3 @@ BaseUrl: "https://wft-geo-db.p.rapidapi.com/v1/geo/"
 | Parametre | Tip     | Açıklama                       |
 | :-------- | :------- | :-------------------------------- |
 | `@Path("countryId")` | `String` | **Required**. id of the requested country |
-  
-## Screenshots
-
-![Uygulama Ekran Görüntüsü](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
-
-  
