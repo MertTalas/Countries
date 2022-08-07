@@ -14,16 +14,16 @@ import javax.inject.Inject
 class CountryRepositoryImpl @Inject constructor(
     private val citiesAPI: CityService
 ) : CountryRepository {
+
     override fun getCountries(): Flow<CountryResponse> = sendRequest {
         citiesAPI.getCountries(Constants.LIMIT)
     }
 
-    override fun getCountryDetailById(countryId: String): Flow<CountryDetailsResponse> = flow {
-        val response = citiesAPI.getCountryDetailById(countryId)
-        emit(response)
-    }.flowOn(Dispatchers.IO)
+    override fun getCountryDetailById(countryId: String): Flow<CountryDetailsResponse> = sendRequest {
+        citiesAPI.getCountryDetailById(countryId)
+    }
 
-    fun <T> sendRequest(call: suspend () -> T): Flow<T> = flow {
+    private fun <T> sendRequest(call: suspend () -> T): Flow<T> = flow {
         val response = call.invoke()
         emit(response)
     }.flowOn(Dispatchers.IO)
