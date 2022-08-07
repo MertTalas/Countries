@@ -15,12 +15,14 @@ A Countries app using the GeoDB Cities API based on MVVM + Clean architecture.
 * Dependency Injection with Hilt,
 * SharedPreferences
 
+
 ## v2: upcoming⚠️
 * Kotlin Flow
 * Room Database instead of SharedPreferences
 * Unit test
 * UI test
 * JavaDoc
+  
   
 ## Tech stack & Open-source libraries
 
@@ -43,7 +45,9 @@ A Countries app using the GeoDB Cities API based on MVVM + Clean architecture.
 - [Timber](https://github.com/JakeWharton/timber) - Logger with a small, extensible API which provides utility on top of Android's normal  `Log` class
 
   
+  
 ## API Usage ("https://rapidapi.com/wirefreethought/api/geodb-cities/")
+
 BaseUrl: "https://wft-geo-db.p.rapidapi.com/v1/geo/"
 
 #### getCountries()
